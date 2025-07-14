@@ -36,7 +36,7 @@ def delete_todo(todo_id: int):
     raise HTTPException(status_code=404, detail="sono id ha naiyo!")
 
 class TodoUpdate(BaseModel):
-    title: str = None
+    title: Optional[str] = None
     is_done: bool = None
 
 #データの編集
