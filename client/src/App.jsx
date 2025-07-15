@@ -2,6 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import MemoItem from "./components/MemoItem";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -13,9 +14,9 @@ function App() {
         <section className="memo-list">
           メモ一覧
           <ul className="memo-list-content">
-            <li className="memo-list-item">メモ1</li>
-            <li className="memo-list-item">メモ2</li>
-            <li className="memo-list-item">メモ3</li>
+            <MemoItem text="メモ1" onEdit={() => {}} onDelete={() => {}} />
+            <MemoItem text="メモ2" onEdit={() => {}} onDelete={() => {}} />
+            <MemoItem text="メモ3" onEdit={() => {}} onDelete={() => {}} />
           </ul>
         </section>
         <section className="memo-input">
