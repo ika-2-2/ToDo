@@ -1,5 +1,3 @@
-import React from "react";
-
 const MemoItem = ({ text, onEdit, onDelete }) => (
   <li className="memo-list-item">
     <span className="memo-text">{text}</span>
