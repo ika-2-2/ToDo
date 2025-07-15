@@ -1,42 +1,65 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@charset "UTF-8";
+
+/* 下地 */
+.sitaji {
+  background-color: #D3D3D3;
+  border-radius: 20px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* 題名 */
+.headline {
+  font-size: large;
+  padding: 20px 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* メモ一覧 */
+.memo-list {
+  font-size: medium;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 2px 2px 8px #aaa;
+  padding: 20px;
+  width: 80%;         /* 横幅を80%に */
+  max-width: 400px;   /* 最大幅を400pxに */
+  margin: 0 30px;  
+}
+.memo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  list-style: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* 変更ボタン */
+.memo-buttons {
+  display: flex;
+  gap: 8px;
 }
 
-.card {
-  padding: 2em;
+.edit-btn,
+.delete-btn {
+  margin-bottom: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #888;
+  background: #f0f0f0;
+  cursor: pointer;
+  font-size: 0.9em;
 }
 
-.read-the-docs {
-  color: #888;
+
+/* メモ追加 */
+.memo-input {
+  font-size: medium;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
