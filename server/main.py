@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 app = FastAPI()
 
@@ -35,6 +35,7 @@ def delete_todo(todo_id: int):
             return todos.pop(i)
     raise HTTPException(status_code=404, detail="sono id ha naiyo!")
 
+#
 class TodoUpdate(BaseModel):
     title: Optional[str] = None
     is_done: bool = None
@@ -42,7 +43,7 @@ class TodoUpdate(BaseModel):
 #データの編集
 @app.put("/todos/{todo_id}", response_model=Todo)
 def update_todo(todo_id: int, todo_update: TodoUpdate):
-    #リクエストと同じIDを探して、todoupdateが空で無ければ編集する
+    #リクエストと同じIDを探して、todoupdateが空でなければ編集する
     for todo in todos:
         if todo.id == todo_id:
             if todo_update.title is not None:
