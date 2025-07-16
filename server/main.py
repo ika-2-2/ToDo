@@ -4,12 +4,13 @@ from typing import List, Optional
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
 DB_url = "sqlite:///./todos.db"
 
-engine = create_engine(DB_url, connect_args{"check_same_thread": False})
+engine = create_engine(DB_url, connect_args={"check_same_thread": False})
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -38,6 +39,16 @@ class TodoUpdate(BaseModel):
 
 
 app = FastAPI()
+
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
