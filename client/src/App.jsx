@@ -1,7 +1,19 @@
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import MemoItem from "./components/MemoItem";
 
 function App() {
+  const [memos, setMemos] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/todos")
+      .then((res) => res.json())
+      .then((data) => setMemos(data))
+      .catch((err) => {
+        console.error("メモとってこれなかった", err);
+      });
+  }, []);
+
   return (
     <>
       <div className="sitaji">
@@ -9,9 +21,14 @@ function App() {
         <section className="memo-list">
           メモ一覧
           <ul className="memo-list-content">
-            <MemoItem text="メモ1" onEdit={() => {}} onDelete={() => {}} />
-            <MemoItem text="メモ2" onEdit={() => {}} onDelete={() => {}} />
-            <MemoItem text="メモ3" onEdit={() => {}} onDelete={() => {}} />
+            {memos.map((memo) => (
+              <MemoItem
+                key={memo.id}
+                text={memo.title}
+                onEdit={() => {}}
+                onDelete={() => {}}
+              />
+            ))}
           </ul>
         </section>
         <section className="memo-input">
