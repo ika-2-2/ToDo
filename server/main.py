@@ -18,7 +18,7 @@ Base = declarative_base()
 
 class TodoDB(Base):
     __tablename__="todos"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     title = Column(String, index=True)
     is_done = Column(Boolean, default=False)
 
@@ -31,6 +31,9 @@ class Todo(BaseModel):
 
     class Config:
         orm_mode = True
+
+class TodoCreate(BaseModel):
+    title: str
 
 class TodoUpdate(BaseModel):
     title: Optional[str] = None
@@ -63,15 +66,9 @@ def get_todos():
 
 #データの追加
 @app.post("/todos", response_model=Todo)
-def create_todo(todo: Todo):
+def create_todo(todo: TodoCreate):
     db = SessionLocal()
-    #同じIDがあったら追加できないように確認
-    existing_todo = db.query(TodoDB).filter(TodoDB.id == todo.id).first()
-    if existing_todo != None:
-        db.close()
-        raise HTTPException(status_code=400, detail="sono id sudeni aru!")
-
-    db_todo = TodoDB(id=todo.id, title=todo.title, is_done=todo.is_done)
+    db_todo = TodoDB(title=todo.title, is_done=False)
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)
@@ -82,8 +79,9 @@ def create_todo(todo: Todo):
 #データの削除
 @app.delete("/todos/{todo_id}", response_model=Todo)
 def delete_todo(todo_id: int):
+    db = SessionLocal()
     #今あるToDoリストに削除したいIDと同じIDがあれば削除
-    todo = db.query(TodoDB).filter(TodoDB.id == todo.id).first()
+    todo = db.query(TodoDB).filter(TodoDB.id == todo_id).first()
     if todo == None:
         db.close()
         raise HTTPException(status_code=404, detail="sono id ha naiyo!")
@@ -110,6 +108,6 @@ def update_todo(todo_id: int, todo_update: TodoUpdate):
         todo.is_done = todo_update.is_done
 
     db.commit()
-    db.refresh()
+    db.refresh(todo)
     db.close()
     return todo
