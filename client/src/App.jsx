@@ -1,9 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import "./App.css";
 import MemoItem from "./components/MemoItem";
 
 function App() {
   const [memos, setMemos] = useState([]);
+
+  function handleEdit(id, newTitle) {
+    fetch(`http://localhost:8000/todos/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title: newTitle }),
+    })
+      .then((res) => res.json())
+      .then((updatedMemo) => {
+        setMemos((prevMemos) =>
+          prevMemos.map((memo) =>
+            memo.id === updatedMemo.id ? updatedMemo : memo
+          )
+        );
+      });
+  }
 
   useEffect(() => {
     fetch("http://localhost:8000/todos")
@@ -24,8 +42,9 @@ function App() {
             {memos.map((memo) => (
               <MemoItem
                 key={memo.id}
+                id={memo.id}
                 text={memo.title}
-                onEdit={() => {}}
+                onEdit={handleEdit}
                 onDelete={() => {}}
               />
             ))}
