@@ -24,8 +24,8 @@ function App() {
             {memos.map((memo) => (
               <MemoItem
                 key={memo.id}
+                id={memo.id}
                 text={memo.title}
-                onEdit={() => {}}
                 onDelete={() => {}}
               />
             ))}
