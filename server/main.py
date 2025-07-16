@@ -34,7 +34,6 @@ class Todo(BaseModel):
 
 class TodoCreate(BaseModel):
     title: str
-    is_done: bool = False
 
 class TodoUpdate(BaseModel):
     title: Optional[str] = None
@@ -69,7 +68,7 @@ def get_todos():
 @app.post("/todos", response_model=Todo)
 def create_todo(todo: TodoCreate):
     db = SessionLocal()
-    db_todo = TodoDB(title=todo.title, is_done=todo.is_done)
+    db_todo = TodoDB(title=todo.title, is_done=False)
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)
