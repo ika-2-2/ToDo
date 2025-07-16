@@ -79,7 +79,7 @@ def create_todo(todo: TodoCreate):
 #データの削除
 @app.delete("/todos/{todo_id}", response_model=Todo)
 def delete_todo(todo_id: int):
-    db.SessionLocal()
+    db = SessionLocal()
     #今あるToDoリストに削除したいIDと同じIDがあれば削除
     todo = db.query(TodoDB).filter(TodoDB.id == todo_id).first()
     if todo == None:
@@ -108,6 +108,6 @@ def update_todo(todo_id: int, todo_update: TodoUpdate):
         todo.is_done = todo_update.is_done
 
     db.commit()
-    db.refresh()
+    db.refresh(todo)
     db.close()
     return todo
