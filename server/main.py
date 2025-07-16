@@ -81,7 +81,7 @@ def create_todo(todo: TodoCreate):
 def delete_todo(todo_id: int):
     db.SessionLocal()
     #今あるToDoリストに削除したいIDと同じIDがあれば削除
-    todo = db.query(TodoDB).filter(TodoDB.id == todo.id).first()
+    todo = db.query(TodoDB).filter(TodoDB.id == todo_id).first()
     if todo == None:
         db.close()
         raise HTTPException(status_code=404, detail="sono id ha naiyo!")
