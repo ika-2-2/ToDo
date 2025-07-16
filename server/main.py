@@ -18,7 +18,7 @@ Base = declarative_base()
 
 class TodoDB(Base):
     __tablename__="todos"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     title = Column(String, index=True)
     is_done = Column(Boolean, default=False)
 
@@ -31,6 +31,10 @@ class Todo(BaseModel):
 
     class Config:
         orm_mode = True
+
+class TodoCreate(BaseModel):
+    title: str
+    is_done: bool = False
 
 class TodoUpdate(BaseModel):
     title: Optional[str] = None
@@ -63,15 +67,9 @@ def get_todos():
 
 #データの追加
 @app.post("/todos", response_model=Todo)
-def create_todo(todo: Todo):
+def create_todo(todo: TodoCreate):
     db = SessionLocal()
-    #同じIDがあったら追加できないように確認
-    existing_todo = db.query(TodoDB).filter(TodoDB.id == todo.id).first()
-    if existing_todo != None:
-        db.close()
-        raise HTTPException(status_code=400, detail="sono id sudeni aru!")
-
-    db_todo = TodoDB(id=todo.id, title=todo.title, is_done=todo.is_done)
+    db_todo = TodoDB(title=todo.title, is_done=todo.is_done)
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)
