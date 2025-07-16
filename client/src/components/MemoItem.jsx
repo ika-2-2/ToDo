@@ -1,8 +1,26 @@
 import { useState } from "react";
 
-const MemoItem = ({ id, text, onEdit, onDelete }) => {
+const MemoItem = ({ id, text, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(text);
+
+  function handleEdit(id, newTitle) {
+    fetch(`http://localhost:8000/todos/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title: newTitle }),
+    })
+      .then((res) => res.json())
+      .then((updatedMemo) => {
+        setMemos((prevMemos) =>
+          prevMemos.map((memo) =>
+            memo.id === updatedMemo.id ? updatedMemo : memo
+          )
+        );
+      });
+  }
 
   return (
     <li className="memo-list-item">
@@ -14,7 +32,7 @@ const MemoItem = ({ id, text, onEdit, onDelete }) => {
           />
           <button
             onClick={() => {
-              onEdit(id, editText);
+              handleEdit(id, editText);
               setIsEditing(false);
             }}
           >
