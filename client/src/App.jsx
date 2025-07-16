@@ -6,12 +6,26 @@ function App() {
   const [memos, setMemos] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/todos")
-      .then((res) => res.json())
-      .then((data) => setMemos(data))
-      .catch((err) => {
-        console.error("メモとってこれなかった", err);
-      });
+    //   fetch("http://localhost:8000/todos")
+    //     .then((res) => res.json())
+    //     .then((data) => setMemos(data))
+    //     .catch((err) => {
+    //       console.error("メモとってこれなかった", err);
+    //     });
+
+    // ダミーデータ
+    setMemos([
+      {
+        id: 1,
+        title: "偽物なおき1",
+        is_done: true,
+      },
+      {
+        id: 2,
+        title: "偽物さくや2",
+        is_done: false,
+      },
+    ]);
   }, []);
 
   return (
