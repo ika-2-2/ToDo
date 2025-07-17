@@ -1,8 +1,9 @@
 import { useState } from "react";
 
-const MemoItem = ({ id, text, onDelete }) => {
+const MemoItem = ({ id, text, onEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(text);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   function handleEdit(id, newTitle) {
     fetch(`http://localhost:8000/todos/${id}`, {
@@ -14,12 +15,21 @@ const MemoItem = ({ id, text, onDelete }) => {
     })
       .then((res) => res.json())
       .then((updatedMemo) => {
-        setMemos((prevMemos) =>
-          prevMemos.map((memo) =>
-            memo.id === updatedMemo.id ? updatedMemo : memo
-          )
-        );
+        if (onEdit) onEdit();
       });
+  }
+
+  function handleDelete() {
+    setIsDeleting(true);
+    fetch(`http://localhost:8000/todos/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (res.ok) {
+          window.location.reload();
+        }
+      })
+      .finally(() => setIsDeleting(false));
   }
 
   return (
@@ -47,7 +57,11 @@ const MemoItem = ({ id, text, onDelete }) => {
             <button className="edit-btn" onClick={() => setIsEditing(true)}>
               編集
             </button>
-            <button className="delete-btn" onClick={onDelete}>
+            <button
+              className="delete-btn"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
               削除
             </button>
           </div>
